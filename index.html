@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#101812" />
+    <meta
+      name="description"
+      content="一款简洁的浏览器贪吃蛇游戏。吃掉食物、不断成长，挑战你的最高分。"
+    />
+    <title>贪吃蛇 · Snake</title>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="./index.html" aria-label="贪吃蛇首页">
+          <span class="brand-mark" aria-hidden="true">S</span>
+          <span>PIXEL<span class="brand-accent">PLAY</span></span>
+        </a>
+        <span class="topbar-note"><span class="status-dot"></span> ARCADE CLASSICS</span>
+      </header>
+
+      <main class="game-layout">
+        <section class="intro" aria-labelledby="game-title">
+          <p class="eyebrow">经典街机 · 重温像素乐趣</p>
+          <h1 id="game-title">贪吃蛇<span>.</span></h1>
+          <p class="intro-copy">吃掉果实，变得更长。小心别撞到自己。</p>
+        </section>
+
+        <section class="game-card" aria-label="贪吃蛇游戏">
+          <div class="game-toolbar">
+            <div class="score-group">
+              <div class="score-box">
+                <span class="score-label">当前得分</span>
+                <strong id="score">000</strong>
+              </div>
+              <div class="score-divider" aria-hidden="true"></div>
+              <div class="score-box best-score">
+                <span class="score-label">最高纪录</span>
+                <strong id="best-score">000</strong>
+              </div>
+              <div id="ai-score-box" class="score-box ai-score" hidden>
+                <span class="score-label">AI 得分</span>
+                <strong id="ai-score">000</strong>
+              </div>
+            </div>
+            <button id="sound-button" class="icon-button" type="button" aria-label="切换音效" title="切换音效">
+              <svg id="sound-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M11 5 6 9H3v6h3l5 4V5Z"></path>
+                <path d="M15.5 8.5a5 5 0 0 1 0 7"></path>
+                <path d="M19 5a10 10 0 0 1 0 14"></path>
+              </svg>
+            </button>
+          </div>
+
+          <div class="settings-row">
+            <label class="setting-control">
+              <span>玩法</span>
+              <select id="mode-select">
+                <option value="manual">手动挑战</option>
+                <option value="autoplay">AI 自动玩</option>
+                <option value="versus">AI 人机对战</option>
+              </select>
+            </label>
+            <label class="setting-control">
+              <span>难度</span>
+              <select id="difficulty-select">
+                <option value="easy">轻松</option>
+                <option value="normal" selected>标准</option>
+                <option value="hard">极速</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="board-wrap">
+            <canvas id="game-canvas" width="600" height="600" aria-label="贪吃蛇棋盘" role="img"></canvas>
+            <div id="game-overlay" class="game-overlay">
+              <div class="overlay-content">
+                <span class="overlay-icon" aria-hidden="true">▶</span>
+                <p id="overlay-title" class="overlay-title">准备好了吗？</p>
+                <p id="overlay-copy" class="overlay-copy">按下开始，开启你的像素冒险</p>
+                <button id="start-button" class="primary-button" type="button">开始游戏 <span aria-hidden="true">→</span></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="game-footer">
+            <div class="control-hint">
+              <span class="keyboard-icon" aria-hidden="true">⌨</span>
+              <span>使用 <kbd>方向键</kbd> 或 <kbd>W A S D</kbd> 移动</span>
+            </div>
+            <button id="restart-button" class="text-button" type="button">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M16.5 10a6.5 6.5 0 1 1-1.9-4.6M16.5 3.5v4h-4"></path></svg>
+              重新开始
+            </button>
+          </div>
+        </section>
+
+        <section class="leaderboard-card" aria-labelledby="leaderboard-title">
+          <div>
+            <p class="eyebrow">LOCAL BEST RUNS</p>
+            <h2 id="leaderboard-title">本地排行榜</h2>
+            <p id="leaderboard-summary" class="leaderboard-summary">记录保存在当前浏览器</p>
+          </div>
+          <button id="leaderboard-button" class="secondary-button" type="button">查看榜单 <span aria-hidden="true">↗</span></button>
+        </section>
+
+        <p class="mobile-hint">移动设备可使用下方方向键控制</p>
+        <div class="touch-controls" aria-label="触摸方向控制">
+          <button type="button" data-direction="up" aria-label="向上">↑</button>
+          <div>
+            <button type="button" data-direction="left" aria-label="向左">←</button>
+            <button type="button" data-direction="down" aria-label="向下">↓</button>
+            <button type="button" data-direction="right" aria-label="向右">→</button>
+          </div>
+        </div>
+      </main>
+
+      <footer class="page-footer">
+        <span>用一点点专注，换一大段快乐。</span>
+        <span>© 2026 PIXELPLAY</span>
+      </footer>
+    </div>
+    <dialog id="leaderboard-dialog" class="leaderboard-dialog">
+      <div class="dialog-heading">
+        <div><p class="eyebrow">YOUR PERSONAL RECORDS</p><h2>本地排行榜</h2></div>
+        <button id="close-leaderboard" class="dialog-close" type="button" aria-label="关闭排行榜">×</button>
+      </div>
+      <div class="leaderboard-toolbar">
+        <label class="leaderboard-filter">
+          <span>筛选玩法</span>
+          <select id="leaderboard-filter">
+            <option value="all">全部玩法</option>
+            <option value="manual">手动挑战</option>
+            <option value="autoplay">AI 自动玩</option>
+            <option value="versus">AI 人机对战</option>
+          </select>
+        </label>
+        <button id="clear-leaderboard" class="clear-button" type="button">清空记录</button>
+      </div>
+      <ol id="leaderboard-list" class="leaderboard-list"></ol>
+      <p class="dialog-note">成绩仅保存在这台设备的浏览器中。</p>
+    </dialog>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
